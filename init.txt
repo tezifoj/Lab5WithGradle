@@ -1,0 +1,199 @@
+[ {
+  "id" : 2,
+  "name" : "Name",
+  "coordinates" : {
+    "x" : 1.0,
+    "y" : 1.0
+  },
+  "creationDate" : "2026-02-28 19:50:49",
+  "salary" : 1.0,
+  "startDate" : "2025-03-03 00:00:00",
+  "status" : "FIRED",
+  "organization" : {
+    "employeesCount" : 1,
+    "type" : "TRUST",
+    "officialAddress" : {
+      "street" : "123"
+    }
+  }
+}, {
+  "id" : 8,
+  "name" : "Name",
+  "coordinates" : {
+    "x" : 1.0,
+    "y" : 1.0
+  },
+  "creationDate" : "2026-02-28 19:50:50",
+  "salary" : 1.0,
+  "startDate" : "2025-03-03 00:00:00",
+  "status" : "FIRED",
+  "organization" : {
+    "employeesCount" : 1,
+    "type" : "TRUST",
+    "officialAddress" : {
+      "street" : "123"
+    }
+  }
+}, {
+  "id" : 3,
+  "name" : "Name2",
+  "coordinates" : {
+    "x" : 10.0,
+    "y" : 10.0
+  },
+  "creationDate" : "2026-02-28 19:50:50",
+  "salary" : 10.0,
+  "startDate" : "2025-03-03 00:00:00",
+  "status" : "FIRED",
+  "organization" : {
+    "employeesCount" : 10,
+    "type" : "TRUST",
+    "officialAddress" : {
+      "street" : "123"
+    }
+  }
+}, {
+  "id" : 9,
+  "name" : "Name2",
+  "coordinates" : {
+    "x" : 10.0,
+    "y" : 10.0
+  },
+  "creationDate" : "2026-02-28 19:50:50",
+  "salary" : 10.0,
+  "startDate" : "2025-03-03 00:00:00",
+  "status" : "FIRED",
+  "organization" : {
+    "employeesCount" : 10,
+    "type" : "TRUST",
+    "officialAddress" : {
+      "street" : "123"
+    }
+  }
+}, {
+  "id" : 4,
+  "name" : "Name",
+  "coordinates" : {
+    "x" : 12.0,
+    "y" : 12.0
+  },
+  "creationDate" : "2026-02-28 19:50:50",
+  "salary" : 12.0,
+  "startDate" : "2025-03-03 00:00:00",
+  "status" : "FIRED",
+  "organization" : {
+    "employeesCount" : 12,
+    "type" : "TRUST",
+    "officialAddress" : {
+      "street" : "123"
+    }
+  }
+}, {
+  "id" : 10,
+  "name" : "Name",
+  "coordinates" : {
+    "x" : 12.0,
+    "y" : 12.0
+  },
+  "creationDate" : "2026-02-28 19:50:50",
+  "salary" : 12.0,
+  "startDate" : "2025-03-03 00:00:00",
+  "status" : "FIRED",
+  "organization" : {
+    "employeesCount" : 12,
+    "type" : "TRUST",
+    "officialAddress" : {
+      "street" : "123"
+    }
+  }
+}, {
+  "id" : 5,
+  "name" : "Name",
+  "coordinates" : {
+    "x" : 15.0,
+    "y" : 15.0
+  },
+  "creationDate" : "2026-02-28 19:50:50",
+  "salary" : 15.0,
+  "startDate" : "2025-03-03 00:00:00",
+  "status" : "FIRED",
+  "organization" : {
+    "employeesCount" : 15,
+    "type" : "TRUST",
+    "officialAddress" : {
+      "street" : "123"
+    }
+  }
+}, {
+  "id" : 11,
+  "name" : "Name",
+  "coordinates" : {
+    "x" : 15.0,
+    "y" : 15.0
+  },
+  "creationDate" : "2026-02-28 19:50:50",
+  "salary" : 15.0,
+  "startDate" : "2025-03-03 00:00:00",
+  "status" : "FIRED",
+  "organization" : {
+    "employeesCount" : 15,
+    "type" : "TRUST",
+    "officialAddress" : {
+      "street" : "123"
+    }
+  }
+}, {
+  "id" : 12,
+  "name" : "Name",
+  "coordinates" : {
+    "x" : 16.0,
+    "y" : 16.0
+  },
+  "creationDate" : "2026-02-28 19:50:50",
+  "salary" : 16.0,
+  "startDate" : "2025-03-03 00:00:00",
+  "status" : "FIRED",
+  "organization" : {
+    "employeesCount" : 17,
+    "type" : "TRUST",
+    "officialAddress" : {
+      "street" : "123"
+    }
+  }
+}, {
+  "id" : 7,
+  "name" : "Name",
+  "coordinates" : {
+    "x" : 17.0,
+    "y" : 17.0
+  },
+  "creationDate" : "2026-02-28 19:50:50",
+  "salary" : 17.0,
+  "startDate" : "2025-03-03 00:00:00",
+  "status" : "FIRED",
+  "organization" : {
+    "employeesCount" : 1,
+    "type" : "TRUST",
+    "officialAddress" : {
+      "street" : "123"
+    }
+  }
+}, {
+  "id" : 13,
+  "name" : "Name",
+  "coordinates" : {
+    "x" : 17.0,
+    "y" : 17.0
+  },
+  "creationDate" : "2026-02-28 19:50:50",
+  "salary" : 17.0,
+  "startDate" : "2025-03-03 00:00:00",
+  "status" : "FIRED",
+  "organization" : {
+    "employeesCount" : 1,
+    "type" : "TRUST",
+    "officialAddress" : {
+      "street" : "123"
+    }
+  }
+} ]
