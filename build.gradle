@@ -10,7 +10,7 @@ buildscript {
 
 plugins {
     id 'java'
-    id 'application'  // Добавьте эту строку
+    id 'application'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
@@ -22,7 +22,7 @@ repositories {
 }
 
 application {
-    mainClass = 'org.example.Main'  // Укажите ваш главный класс
+    mainClass = 'org.example.Main'
 }
 
 dependencies {

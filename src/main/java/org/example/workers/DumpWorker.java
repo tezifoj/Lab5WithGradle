@@ -11,7 +11,7 @@ import org.example.utility.Console;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
-import java.util.Vector;
+import java.util.*;
 
 public class DumpWorker {
     private final ObjectMapper mapper = new ObjectMapper()
@@ -25,13 +25,36 @@ public class DumpWorker {
 
     private final String fileName;
     private final Console console;
+    private final WorkerValidator validator;
 
     public DumpWorker(String fileName, Console console) {
         this.fileName = fileName;
         this.console = console;
+        this.validator = new WorkerValidator();
     }
 
     public void writeCollection(Vector<Worker> collection) {
+        if (collection == null) {
+            console.printError("Ошибка: коллекция null, сохранение отменено");
+            return;
+        }
+
+        if (fileName == null || fileName.trim().isEmpty()) {
+            console.printError("Ошибка: имя файла не указано");
+            return;
+        }
+
+        WorkerValidator.CollectionValidationResult validationResult =
+                validator.validateCollection(collection);
+
+        if (validationResult.hasErrors()) {
+            console.printError("Обнаружены ошибки в данных. Сохранение отменено:");
+            for (String error : validationResult.getErrors()) {
+                console.printError("  " + error);
+            }
+            return;
+        }
+
         try (FileWriter fileWriter = new FileWriter(fileName)) {
             String json = mapper.writeValueAsString(collection);
             fileWriter.write(json);
@@ -50,22 +73,26 @@ public class DumpWorker {
 
         File file = new File(fileName);
         if (!file.exists()) {
-            console.printError("Загрузочный файл не найден! Будет создана новая коллекция.");
+            console.printError("Загрузочный файл '" + fileName + "' не найден!");
+            console.println("Будет создана новая пустая коллекция.");
+            collection.clear();
+            return;
+        }
+
+        if (!file.canRead()) {
+            console.printError("Нет прав на чтение файла '" + fileName + "'!");
             return;
         }
 
         if (file.length() == 0) {
             console.println("Файл пуст, создана новая коллекция.");
+            collection.clear();
             return;
         }
 
         try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file))) {
             byte[] bytes = bis.readAllBytes();
             String json = new String(bytes).trim();
-
-            System.out.println("   НАЧАЛО JSON ФАЙЛА");
-            System.out.println(json);
-            System.out.println("   КОНЕЦ ПРЕДПРОСМОТРА");
 
             if (!json.startsWith("[")) {
                 console.printError("Ошибка: файл должен начинаться с '[' (массив объектов)");
@@ -74,16 +101,42 @@ public class DumpWorker {
                 return;
             }
 
-            Vector<Worker> loadedCollection = mapper.readValue(json, new TypeReference<Vector<Worker>>() {});
+            Vector<Worker> loadedCollection;
+            try {
+                loadedCollection = mapper.readValue(json, new TypeReference<Vector<Worker>>() {});
+            } catch (Exception e) {
+                console.printError("Ошибка парсинга JSON: " + e.getMessage());
+                console.println("Создаю новую пустую коллекцию...");
+                collection.clear();
+                return;
+            }
+
+            WorkerValidator.CollectionValidationResult validationResult =
+                    validator.validateCollection(loadedCollection);
+
+            if (validationResult.hasErrors()) {
+                console.printError("При загрузке обнаружены проблемы:");
+                for (String error : validationResult.getErrors()) {
+                    console.printError("  " + error);
+                }
+                console.println("Загружено " + validationResult.getValidCount() +
+                        " из " + loadedCollection.size() + " элементов");
+            }
+
             collection.clear();
-            collection.addAll(loadedCollection);
-            console.println("Коллекция Worker успешно загружена! Загружено элементов: " + loadedCollection.size());
+            collection.addAll(validationResult.getValidWorkers());
 
+            console.println("Коллекция Worker успешно загружена! Загружено элементов: " +
+                    collection.size());
+
+        } catch (FileNotFoundException e) {
+            console.printError("Файл не найден: " + e.getMessage());
+            collection.clear();
+        } catch (IOException e) {
+            console.printError("Ошибка ввода-вывода: " + e.getMessage());
+            collection.clear();
         } catch (Exception e) {
-            console.printError("Ошибка при чтении файла: " + e.getMessage());
-            e.printStackTrace();
-
-            console.println("Создана новая пустая коллекция.");
+            console.printError("Непредвиденная ошибка: " + e.getMessage());
             collection.clear();
         }
     }
