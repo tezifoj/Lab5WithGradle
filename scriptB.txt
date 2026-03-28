@@ -1,0 +1,4 @@
+info
+execute_script scriptC.txt
+show
+execute_script scriptA.txt
