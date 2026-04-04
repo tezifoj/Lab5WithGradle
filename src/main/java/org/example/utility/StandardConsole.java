@@ -20,11 +20,14 @@ public class StandardConsole implements Console {
     public String readln() {
         try {
             if (fileScanner != null) {
-                return fileScanner.nextLine();
+                return fileScanner.hasNextLine() ? fileScanner.nextLine() : null;
+            }
+            if (!defScanner.hasNextLine()) {
+                return null;
             }
             return defScanner.nextLine();
         } catch (Exception e) {
-            return "";
+            return null;
         }
     }
 
@@ -44,7 +47,7 @@ public class StandardConsole implements Console {
     }
 
     public void prompt() {
-        if (fileScanner == null) {
+        if (fileScanner == null && !Thread.currentThread().isInterrupted()) {
             System.out.print(P);
             System.out.flush();
         }

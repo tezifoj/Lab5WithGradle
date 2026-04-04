@@ -13,11 +13,17 @@ public class Runner {
     private final CommandWorker commandWorker;
     private final List<String> scriptStack = new ArrayList<>();
     private int lengthRecursion = -1;
-    private boolean running = true;
+    private volatile boolean running = true;
+    private volatile boolean isShuttingDown = false;
 
     public Runner(Console console, CommandWorker commandWorker) {
         this.console = console;
         this.commandWorker = commandWorker;
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            isShuttingDown = true;
+            running = false;
+        }));
     }
 
     public void interactiveMode() {
@@ -29,11 +35,23 @@ public class Runner {
     }
 
     private void processCommand() {
+        if (!running || isShuttingDown) {
+            return;
+        }
+
         try {
-            console.prompt();
+            if (running && !isShuttingDown) {
+                console.prompt();
+            } else {
+                return;
+            }
+
             String input = console.readln();
 
             if (input == null) {
+                if (!isShuttingDown) {
+                    System.out.println("\nПрограмма прервана пользователем (Ctrl+C)");
+                }
                 running = false;
                 return;
             }
@@ -59,9 +77,14 @@ public class Runner {
             }
 
         } catch (NoSuchElementException e) {
-            console.println("\nЗавершение программы...");
+            if (!isShuttingDown) {
+                System.out.println("\nПрограмма прервана пользователем (Ctrl+C)");
+            }
             running = false;
         } catch (Exception e) {
+            if (!isShuttingDown) {
+                console.printError("Ошибка: " + e.getMessage());
+            }
         }
     }
 
@@ -88,7 +111,7 @@ public class Runner {
                     console.selectConsoleScanner();
                     console.println("Была замечена рекурсия! Введите максимальную глубину рекурсии (0..500)");
                     boolean valid = false;
-                    while (!valid) {
+                    while (!valid && running && !isShuttingDown) {
                         try {
                             console.print("> ");
                             String input = console.readln();
@@ -135,7 +158,7 @@ public class Runner {
             if (!scriptScanner.hasNext()) throw new NoSuchElementException();
             console.selectFileScanner(scriptScanner);
 
-            while (scriptRunning) {
+            while (scriptRunning && running && !isShuttingDown) {
                 String input = console.readln();
                 if (input == null || input.equalsIgnoreCase("exit")) break;
                 input = input.trim();
@@ -173,7 +196,9 @@ public class Runner {
         } catch (NoSuchElementException exception) {
             return new ExecutionResponse(false, "Файл со скриптом пуст!");
         } catch (IllegalStateException exception) {
-            console.printError("Непредвиденная ошибка!");
+            if (!isShuttingDown) {
+                console.printError("Непредвиденная ошибка!");
+            }
         } finally {
             scriptStack.remove(scriptStack.size() - 1);
         }
@@ -212,6 +237,7 @@ public class Runner {
 
     public void reset() {
         running = true;
+        isShuttingDown = false;
         scriptStack.clear();
         lengthRecursion = -1;
     }

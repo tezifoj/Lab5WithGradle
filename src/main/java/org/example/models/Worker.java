@@ -34,11 +34,9 @@ public class Worker extends Element {
     private Status status;
     private Organization organization;
 
-    // 1. ПУСТОЙ КОНСТРУКТОР (обязательно!)
     public Worker() {
     }
 
-    // 2. КОНСТРУКТОР С АННОТАЦИЯМИ ДЛЯ JSON
     @JsonCreator
     public Worker(
             @JsonProperty("id") Long id,
@@ -61,7 +59,6 @@ public class Worker extends Element {
         this.organization = organization;
     }
 
-    // 3. ОСНОВНОЙ КОНСТРУКТОР ДЛЯ ПРОГРАММЫ
     public Worker(long id, String name, Coordinates coordinates, Double salary,
                   Date startDate, LocalDateTime endDate, Status status, Organization organization) {
         this.id = id;
@@ -75,7 +72,6 @@ public class Worker extends Element {
         this.organization = organization;
     }
 
-    // ГЕТТЕРЫ (обязательно!)
     @Override
     public Long getId() { return id; }
 
